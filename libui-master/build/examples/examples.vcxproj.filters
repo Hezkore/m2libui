@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="G:\code\monkey2\libui\src\libui-master\examples\CMakeLists.txt" />
+    <CustomBuild Include="G:\code\monkey2\libui\src\libui-master\build\CMakeFiles\15f232fb3660adc3a804f855406ef9c6\examples.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="G:\code\monkey2\libui\src\libui-master\build\examples\CMakeFiles\examples" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{D28BC537-C7B7-34F7-BCBB-3B796BF15B51}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
