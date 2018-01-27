@@ -42,8 +42,8 @@ Extern
 	
 	' CONTROL
 	' PROBLEM(?)
-	' Should be a struct I guess? (is in C source)
-	' But buttons etc. can't extends structs
+	' Should be a struct I guess? Is in C source...
+	' But classes (like buttons etc.) can't extend structs
 	Class uiControl
 		Field Signature:uint32_t
 		Field OSSignature:uint32_t
@@ -301,6 +301,7 @@ End
 
 Function WindowClose:Int( ui:uiWindow, data:Void Ptr )
 	Print "BYE!"
+	uiQuit()
 	Return True 'Allow close
 End
 
