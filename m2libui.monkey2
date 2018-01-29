@@ -1,85 +1,16 @@
-#Import "<libc>"
-#Import "<libd2d1.a>"
-#Import "<libole32.a>"
-#Import "<libgdi32.a>"
-#Import "<libuser32.a>"
-#Import "<libkernel32.a>"
-#Import "<libuxtheme.a>"
-#Import "<libdwrite.a>"
-#Import "<libusp10.a>"
+' Monkey2 Libui module
+' By @Hezkore 2018
+' https://github.com/Hezkore/m2libui
 
-Using libc..
+Namespace m2libui
 
 #Import "libui-master/ui.h"
 
-#Import "libui-master/common/areaevents.c"
-#Import "libui-master/common/control.c"
-#Import "libui-master/common/debug.c"
-#Import "libui-master/common/matrix.c"
-#Import "libui-master/common/shouldquit.c"
-#Import "libui-master/common/userbugs.c"
+' PROBLEM
+' This only works on Windows so far
+' Please edit/make the makefile_yourOS.monkey2 to complete this module
 
-#If __TARGET__="macos"
-	#Import "libui-master/darwin/alloc.m"
-	'Add every other file from the 'darwin' folder here
-#Elseif __TARGET__="linux"
-	#Import "libui-master/unix/alloc.c"
-	'Add every other file from the 'unix' folder here
-#Elseif __TARGET__="windows"
-	#Import "libui-master/windows/alloc.cpp"
-	#Import "libui-master/windows/area.cpp"
-	#Import "libui-master/windows/areadraw.cpp"
-	#Import "libui-master/windows/areaevents.cpp"
-	#Import "libui-master/windows/areascroll.cpp"
-	#Import "libui-master/windows/areautil.cpp"
-	#Import "libui-master/windows/box.cpp"
-	#Import "libui-master/windows/button.cpp"
-	#Import "libui-master/windows/checkbox.cpp"
-	#Import "libui-master/windows/colorbutton.cpp"
-	#Import "libui-master/windows/colordialog.cpp"
-	#Import "libui-master/windows/combobox.cpp"
-	#Import "libui-master/windows/container.cpp"
-	#Import "libui-master/windows/control.cpp"
-	#Import "libui-master/windows/d2dscratch.cpp"
-	#Import "libui-master/windows/datetimepicker.cpp"
-	#Import "libui-master/windows/debug.cpp"
-	#Import "libui-master/windows/draw.cpp"
-	#Import "libui-master/windows/drawmatrix.cpp"
-	#Import "libui-master/windows/drawpath.cpp"
-	#Import "libui-master/windows/drawtext.cpp"
-	#Import "libui-master/windows/dwrite.cpp"
-	#Import "libui-master/windows/editablecombo.cpp"
-	#Import "libui-master/windows/entry.cpp"
-	#Import "libui-master/windows/events.cpp"
-	#Import "libui-master/windows/fontbutton.cpp"
-	#Import "libui-master/windows/fontdialog.cpp"
-	#Import "libui-master/windows/form.cpp"
-	#Import "libui-master/windows/graphemes.cpp"
-	#Import "libui-master/windows/grid.cpp"
-	#Import "libui-master/windows/group.cpp"
-	#Import "libui-master/windows/init.cpp"
-	#Import "libui-master/windows/label.cpp"
-	#Import "libui-master/windows/main.cpp"
-	#Import "libui-master/windows/menu.cpp"
-	#Import "libui-master/windows/multilineentry.cpp"
-	#Import "libui-master/windows/parent.cpp"
-	#Import "libui-master/windows/progressbar.cpp"
-	#Import "libui-master/windows/radiobuttons.cpp"
-	#Import "libui-master/windows/separator.cpp"
-	#Import "libui-master/windows/sizing.cpp"
-	#Import "libui-master/windows/slider.cpp"
-	#Import "libui-master/windows/spinbox.cpp"
-	#Import "libui-master/windows/stddialogs.cpp"
-	#Import "libui-master/windows/tab.cpp"
-	#Import "libui-master/windows/tabpage.cpp"
-	#Import "libui-master/windows/text.cpp"
-	#Import "libui-master/windows/utf16.cpp"
-	#Import "libui-master/windows/utilwin.cpp"
-	#Import "libui-master/windows/window.cpp"
-	#Import "libui-master/windows/winpublic.cpp"
-	#Import "libui-master/windows/winutil.cpp"
-	#Import "libui-master/windows/winutil.cpp"
-#End
+#Import "makefile.monkey2"
 
 Extern
 	
@@ -103,11 +34,6 @@ Extern
 	Function uiOnShouldQuit:Void( func:Int( data:Void Ptr=Null ), data:Void Ptr=Null )
 	
 	Function uiFreeText:Void( text:CString )
-	
-	
-	' PROBLEM(?)
-	' Should be a struct I guess? Is in C source...
-	' But classes (like buttons etc.) can't extend structs
 	
 	' CONTROL
 	Class uiControl
@@ -365,7 +291,7 @@ Function ButtonPopup:Void( ui:uiButton, data:Void Ptr )
 	'uiMsgBox( Cast<uiWindow>(uiControlParent( ui )), "Yes?", "You clicked..." )
 End
 
-Function WindowClose:Int( ui:uiWindow, data:Void Ptr )
+Function onClosing:Int( ui:uiWindow, data:Void Ptr )
 	Print "BYE!"
 	uiQuit()
 	Return True 'Allow close
@@ -376,55 +302,127 @@ Function Main()
 	Local options:uiInitOptions
 	uiInit( Varptr options )
 	
+	Local menu:= uiNewMenu("File")
+	Local item:= uiMenuAppendItem(menu, "Open")
+	'uiMenuItemOnClicked(item, openClicked, Null)
+	item = uiMenuAppendItem(menu, "Save")
+	'uiMenuItemOnClicked(item, saveClicked, Null)
+	item = uiMenuAppendQuitItem(menu)
+	'uiOnShouldQuit(shouldQuit, Null)
+
+	menu = uiNewMenu("Edit")
+	item = uiMenuAppendCheckItem(menu, "Checkable Item")
+	uiMenuAppendSeparator(menu)
+	item = uiMenuAppendItem(menu, "Disabled Item")
+	uiMenuItemDisable(item)
+	item = uiMenuAppendPreferencesItem(menu)
+
+	menu = uiNewMenu("Help")
+	item = uiMenuAppendItem(menu, "Help")
+	item = uiMenuAppendAboutItem(menu)
+
+	Local mainwin:= uiNewWindow("libui Control Gallery", 640, 480, 1)
+	uiWindowSetMargined(mainwin, 1)
+	uiWindowOnClosing(mainwin, onClosing)
+	
+	Local box:= uiNewVerticalBox()
+	uiBoxSetPadded(box, 1)
+	uiWindowSetChild(mainwin, box)
+	
+	Local hbox:= uiNewHorizontalBox()
+	uiBoxSetPadded(hbox, 1)
+	uiBoxAppend(box, hbox, 1)
+	
+	Local group:= uiNewGroup("Basic Controls")
+	uiGroupSetMargined(group, 1)
+	uiBoxAppend(hbox, group, 0)
+	
+	Local inner:= uiNewVerticalBox()
+	uiBoxSetPadded(inner, 1)
+	uiGroupSetChild(group, inner)
+	
+	uiBoxAppend(inner, uiNewButton("Button"), 0)
+	uiBoxAppend(inner, uiNewCheckbox("Checkbox"), 0)
+	Local entry:=uiNewEntry()
+	uiEntrySetText(entry, "Entry")
+	uiBoxAppend(inner, entry, 0)
+	uiBoxAppend(inner, uiNewLabel("Label"), 0)
+	
+	uiBoxAppend(inner, uiNewHorizontalSeparator(), 0)
+	
+	uiBoxAppend(inner, uiNewDatePicker(), 0)
+	uiBoxAppend(inner, uiNewTimePicker(), 0)
+	uiBoxAppend(inner, uiNewDateTimePicker(), 0)
+	
+	' NOT WRAPPED
+	'uiBoxAppend(inner, uiNewFontButton(), 0)
+	' NOT WRAPPED
+	'uiBoxAppend(inner, uiNewColorButton(), 0)
+	
+	Local inner2:=uiNewVerticalBox()
+	uiBoxSetPadded(inner2, 1)
+	uiBoxAppend(hbox, inner2, 1)
+	
+	group=uiNewGroup("Numbers")
+	uiGroupSetMargined(group, 1)
+	uiBoxAppend(inner2, group, 0)
+	
+	inner=uiNewVerticalBox()
+	uiBoxSetPadded(inner, 1)
+	uiGroupSetChild(group, inner)
+	
+	Local spinbox:=uiNewSpinbox(0, 100)
+	'uiSpinboxOnChanged(spinbox, onSpinboxChanged, Null)
+	uiBoxAppend(inner, spinbox, 0)
+	
+	Local slider:=uiNewSlider(0, 100)
+	'uiSliderOnChanged(slider, onSliderChanged, Null)
+	uiBoxAppend(inner, slider, 0)
+	
+	Local progressbar:= uiNewProgressBar()
+	uiBoxAppend(inner, progressbar, 0)
+	
+	group=uiNewGroup("Lists")
+	uiGroupSetMargined(group, 1)
+	uiBoxAppend(inner2, group, 0)
+	
+	inner=uiNewVerticalBox()
+	uiBoxSetPadded(inner, 1)
+	uiGroupSetChild(group, inner)
+	
+	Local cbox:=uiNewCombobox()
+	uiComboboxAppend(cbox, "Combobox Item 1")
+	uiComboboxAppend(cbox, "Combobox Item 2")
+	uiComboboxAppend(cbox, "Combobox Item 3")
+	uiBoxAppend(inner, cbox, 0)
+	
+	Local ecbox:=uiNewEditableCombobox()
+	uiEditableComboboxAppend(ecbox, "Editable Item 1")
+	uiEditableComboboxAppend(ecbox, "Editable Item 2")
+	uiEditableComboboxAppend(ecbox, "Editable Item 3")
+	uiBoxAppend(inner, ecbox, 0)
+	
+	Local rb:=uiNewRadioButtons()
+	uiRadioButtonsAppend(rb, "Radio Button 1")
+	uiRadioButtonsAppend(rb, "Radio Button 2")
+	uiRadioButtonsAppend(rb, "Radio Button 3")
+	uiBoxAppend(inner, rb, 1)
+	
+	Local tab:=uiNewTab()
+	
 	' PROBLEM
-	' Local window:uiWindow works fine
-	' But a Global window:uiWindow does NOT work for some reason
+	' Appeding to a tab causes a crash
 	
-	Local window:=uiNewWindow( "asd",640,64,0 )
-	'Global window:=uiNewWindow( "asd",640,64,0 )
+'	uiTabAppend(tab, "Page 1", uiNewButton( "Heya" ))
+'	uiTabAppend(tab, "Page 2", uiNewHorizontalBox())
+'	uiTabAppend(tab, "Page 3", uiNewHorizontalBox())
+	uiBoxAppend(inner2, tab, 1)
 	
-	uiControlShow( window )
-	uiWindowOnClosing( window, WindowClose )
-	
-	Local box:=uiNewHorizontalBox()
-	uiWindowSetChild( window, box )
-	
-	Local button:=uiNewButton( "Button1" )
-	uiBoxAppend( box, button, 0 )
-	
-	' PROBLEM
-	' Passing a "real" function works just fine when pressing the button
-	' But doing Lambda doesn't work, only returns "Null Function Error" when pressed
-	
-	uiButtonOnClicked( button, Test )
-	'uiButtonOnClicked( button, Lambda( ui:uiButton, data:Void Ptr )
-	'	Print "Hello!"
-	'End )
-	
-	Local button2:=uiNewButton( "Button2" )
-	uiBoxAppend( box, button2, 0 )
-	uiButtonOnClicked( button2, ButtonPopup )
-	
-	Local checkbox:=uiNewCheckbox( "Check" )
-	uiBoxAppend( box, checkbox, 0 )
-	
-	Local entry:=uiNewMultilineEntry()
-	uiBoxAppend( box, entry, 0 )
-	
-	Local password:=uiNewPasswordEntry()
-	uiBoxAppend( box, password, 0 )
-	
-	Local search:=uiNewSearchEntry()
-	uiBoxAppend( box, search, 0 )
-	
-	' NOTICE
-	' This updates the window for us
-	' We can either update it ourselves with uiMainStep
-	' Or we can let libui take care of it and use minimal CPU via uiMain
-	' Remember that uiMain is blocking
-	
+	uiControlShow( mainwin )
 	uiMain()
-	'Repeat
-	'	uiMainStep(0)
-	'Forever
+	
+	' PROBLEM
+	' Uninit causes a crash?
+	
+	'uiUninit()
 End

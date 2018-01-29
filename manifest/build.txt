@@ -1,0 +1,1 @@
+windres -o "manifest/manifest-x.o" "libui-master/windows/resources.rc"
