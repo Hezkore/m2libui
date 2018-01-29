@@ -1,1 +1,3 @@
-windres -o "manifest/manifest-x.o" "libui-master/windows/resources.rc"
+Built using MinGW-w64 via:
+windres -o "manifest/manifest-x64.o" "libui-master/windows/resources.rc" --target=pe-x86-64
+windres -o "manifest/manifest-x86.o" "libui-master/windows/resources.rc" --target=pe-i386
