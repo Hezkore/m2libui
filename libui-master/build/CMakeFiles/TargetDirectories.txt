@@ -1,8 +1,0 @@
-G:/code/monkey2/libui/src/libui-master/build/CMakeFiles/libui.dir
-G:/code/monkey2/libui/src/libui-master/build/CMakeFiles/ALL_BUILD.dir
-G:/code/monkey2/libui/src/libui-master/build/CMakeFiles/ZERO_CHECK.dir
-G:/code/monkey2/libui/src/libui-master/build/test/CMakeFiles/tester.dir
-G:/code/monkey2/libui/src/libui-master/build/examples/CMakeFiles/controlgallery.dir
-G:/code/monkey2/libui/src/libui-master/build/examples/CMakeFiles/histogram.dir
-G:/code/monkey2/libui/src/libui-master/build/examples/CMakeFiles/examples.dir
-G:/code/monkey2/libui/src/libui-master/build/examples/CMakeFiles/cpp-multithread.dir

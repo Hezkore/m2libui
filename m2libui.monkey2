@@ -1,20 +1,85 @@
 #Import "<libc>"
-#Import "<std>"
-Using std..
+#Import "<libd2d1.a>"
+#Import "<libole32.a>"
+#Import "<libgdi32.a>"
+#Import "<libuser32.a>"
+#Import "<libkernel32.a>"
+#Import "<libuxtheme.a>"
+#Import "<libdwrite.a>"
+#Import "<libusp10.a>"
+
 Using libc..
 
-' PROBLEM/NOTICE 
-' I've built this lib myself with MinGW-W64 and CMake
-' So right now this only works for Windows (and probably only with MSVC 2017?)
-' Can Monkey2 do this for me instead?
-#Import "libui-master/build/out/Debug/libui.lib"
-
-' Header
 #Import "libui-master/ui.h"
 
-' DLL 
-' Must be in Root dir (possible to integrate instead?)
-#Import "libui.dll@/.."
+#Import "libui-master/common/areaevents.c"
+#Import "libui-master/common/control.c"
+#Import "libui-master/common/debug.c"
+#Import "libui-master/common/matrix.c"
+#Import "libui-master/common/shouldquit.c"
+#Import "libui-master/common/userbugs.c"
+
+#If __TARGET__="macos"
+	#Import "libui-master/darwin/alloc.m"
+	'Add every other file from the 'darwin' folder here
+#Elseif __TARGET__="linux"
+	#Import "libui-master/unix/alloc.c"
+	'Add every other file from the 'unix' folder here
+#Elseif __TARGET__="windows"
+	#Import "libui-master/windows/alloc.cpp"
+	#Import "libui-master/windows/area.cpp"
+	#Import "libui-master/windows/areadraw.cpp"
+	#Import "libui-master/windows/areaevents.cpp"
+	#Import "libui-master/windows/areascroll.cpp"
+	#Import "libui-master/windows/areautil.cpp"
+	#Import "libui-master/windows/box.cpp"
+	#Import "libui-master/windows/button.cpp"
+	#Import "libui-master/windows/checkbox.cpp"
+	#Import "libui-master/windows/colorbutton.cpp"
+	#Import "libui-master/windows/colordialog.cpp"
+	#Import "libui-master/windows/combobox.cpp"
+	#Import "libui-master/windows/container.cpp"
+	#Import "libui-master/windows/control.cpp"
+	#Import "libui-master/windows/d2dscratch.cpp"
+	#Import "libui-master/windows/datetimepicker.cpp"
+	#Import "libui-master/windows/debug.cpp"
+	#Import "libui-master/windows/draw.cpp"
+	#Import "libui-master/windows/drawmatrix.cpp"
+	#Import "libui-master/windows/drawpath.cpp"
+	#Import "libui-master/windows/drawtext.cpp"
+	#Import "libui-master/windows/dwrite.cpp"
+	#Import "libui-master/windows/editablecombo.cpp"
+	#Import "libui-master/windows/entry.cpp"
+	#Import "libui-master/windows/events.cpp"
+	#Import "libui-master/windows/fontbutton.cpp"
+	#Import "libui-master/windows/fontdialog.cpp"
+	#Import "libui-master/windows/form.cpp"
+	#Import "libui-master/windows/graphemes.cpp"
+	#Import "libui-master/windows/grid.cpp"
+	#Import "libui-master/windows/group.cpp"
+	#Import "libui-master/windows/init.cpp"
+	#Import "libui-master/windows/label.cpp"
+	#Import "libui-master/windows/main.cpp"
+	#Import "libui-master/windows/menu.cpp"
+	#Import "libui-master/windows/multilineentry.cpp"
+	#Import "libui-master/windows/parent.cpp"
+	#Import "libui-master/windows/progressbar.cpp"
+	#Import "libui-master/windows/radiobuttons.cpp"
+	#Import "libui-master/windows/separator.cpp"
+	#Import "libui-master/windows/sizing.cpp"
+	#Import "libui-master/windows/slider.cpp"
+	#Import "libui-master/windows/spinbox.cpp"
+	#Import "libui-master/windows/stddialogs.cpp"
+	#Import "libui-master/windows/tab.cpp"
+	#Import "libui-master/windows/tabpage.cpp"
+	#Import "libui-master/windows/text.cpp"
+	#Import "libui-master/windows/utf16.cpp"
+	#Import "libui-master/windows/utilwin.cpp"
+	#Import "libui-master/windows/window.cpp"
+	#Import "libui-master/windows/winpublic.cpp"
+	#Import "libui-master/windows/winutil.cpp"
+	#Import "libui-master/windows/winutil.cpp"
+#End
 
 Extern
 	
@@ -40,10 +105,11 @@ Extern
 	Function uiFreeText:Void( text:CString )
 	
 	
-	' CONTROL
 	' PROBLEM(?)
 	' Should be a struct I guess? Is in C source...
 	' But classes (like buttons etc.) can't extend structs
+	
+	' CONTROL
 	Class uiControl
 		Field Signature:uint32_t
 		Field OSSignature:uint32_t
@@ -330,7 +396,7 @@ Function Main()
 	' Passing a "real" function works just fine when pressing the button
 	' But doing Lambda doesn't work, only returns "Null Function Error" when pressed
 	
-	'uiButtonOnClicked( button, Test )
+	uiButtonOnClicked( button, Test )
 	'uiButtonOnClicked( button, Lambda( ui:uiButton, data:Void Ptr )
 	'	Print "Hello!"
 	'End )
