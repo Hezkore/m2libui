@@ -1,4 +1,4 @@
-' Monkey2 Libui module
+' Monkey2 libui library wrapper
 ' By @Hezkore 2018
 ' https://github.com/Hezkore/m2libui
 
@@ -24,8 +24,8 @@ Extern
 	Function uiFreeInitError:Void( err:CString )
 	
 	' MAIN
-	Function uiMain:void()
-	Function uiMainSteps:void()
+	Function uiMain:Void()
+	Function uiMainSteps:Void()
 	Function uiMainStep:Int( wait:Int )
 	Function uiQuit:Void()
 	
@@ -36,67 +36,67 @@ Extern
 	Function uiFreeText:Void( text:CString )
 	
 	' CONTROL
-	Class uiControl
+	Class uiControl Extends Void="uiControl"
 		Field Signature:uint32_t
 		Field OSSignature:uint32_t
 		Field TypeSignature:uint32_t
 		Field Control:uiControl
 	End
 	
-	Function uiControlDestroy:Void( ui:uiControl )
-	Function uiControlHandle:uintptr_t( ui:uiControl )
-	Function uiControlParent:uiControl( ui:uiControl )
-	Function uiControlSetParent:Void( ui:uiControl, ui:uiControl )
-	Function uiControlToplevel:Int( ui:uiControl )
-	Function uiControlVisible:Int( ui:uiControl )
-	Function uiControlShow:Void( ui:uiControl )
-	Function uiControlHide:Void( ui:uiControl )
-	Function uiControlEnabled:Int( ui:uiControl )
-	Function uiControlEnable:Void( ui:uiControl )
-	Function uiControlDisable:Void( ui:uiControl )
+	Function uiControlDestroy:Void( c:uiControl )
+	Function uiControlHandle:uintptr_t( c:uiControl )
+	Function uiControlParent:uiControl( c:uiControl )
+	Function uiControlSetParent:Void( c:uiControl, parent:uiControl )
+	Function uiControlToplevel:Int( c:uiControl )
+	Function uiControlVisible:Int( c:uiControl )
+	Function uiControlShow:Void( c:uiControl )
+	Function uiControlHide:Void( c:uiControl )
+	Function uiControlEnabled:Int( c:uiControl )
+	Function uiControlEnable:Void( c:uiControl )
+	Function uiControlDisable:Void( c:uiControl )
 	
 	Function uiAllocControl:uiControl( n:size_t, OSsig:uint32_t, typesig:uint32_t, typenamestr:CString )
-	Function uiFreeControl:Void( ui:uiControl )
+	Function uiFreeControl:Void( c:uiControl )
 	
-	Function uiControlVerifySetParent:Void( ui:uiControl, ui:uiControl )
-	Function uiControlEnabledToUser:Int( ui:uiControl )
+	Function uiControlVerifySetParent:Void( c:uiControl, c:uiControl )
+	Function uiControlEnabledToUser:Int( c:uiControl )
 	
 	' WINDOW
 	Class uiWindow Extends uiControl
 	End
 	
-	Function uiWindowTitle:String( ui:uiWindow )
-	Function uiWindowSetTitle:Void( ui:uiWindow, title:CString )
-	Function uiWindowContentSize:Void( ui:uiWindow, width:Int, height:Int )
-	Function uiWindowSetContentSize:Void( ui:uiWindow, width:Int, height:Int )
-	Function uiWindowFullscreen:Int( ui:uiWindow )
-	Function uiWindowSetFullscreen:Void( ui:uiWindow, fullscreen:Int )
-	Function uiWindowOnContentSizeChanged:Void( ui:uiWindow, func:Void( ui:uiWindow, data:Void Ptr=Null ), data:Void Ptr=Null )
-	Function uiWindowOnClosing:Void( ui:uiWindow, func:Int( ui:uiWindow, data:Void Ptr=Null ), data:Void Ptr=Null )
-	Function uiWindowBorderless:Int( ui:uiWindow )
-	Function uiWindowSetBorderless:Void( ui:uiWindow, borderless:Int )
-	Function uiWindowSetChild:Void( ui:uiWindow, child:uiControl )
-	Function uiWindowMargined:Int( ui:uiWindow )
-	Function uiWindowSetMargined:Void( ui:uiWindow, margined:Int )
-	Function uiNewWindow:uiWindow( title:CString, width:Int, height:Int, hasMenubar:Int )
+	Function uiWindowTitle:String( w:uiWindow )
+	Function uiWindowSetTitle:Void( w:uiWindow, title:CString )
+	Function uiWindowContentSize:Void( w:uiWindow, width:Int Ptr, height:Int Ptr )
+	Function uiWindowSetContentSize:Void( w:uiWindow, width:Int, height:Int )
+	Function uiWindowFullscreen:Int( w:uiWindow )
+	Function uiWindowSetFullscreen:Void( w:uiWindow, fullscreen:Int )
+	Function uiWindowOnContentSizeChanged:Void( w:uiWindow, func:Void( w:uiWindow, data:Void Ptr=Null ), data:Void Ptr=Null )
+	Function uiWindowOnClosing:Void( w:uiWindow, func:Int( w:uiWindow, data:Void Ptr=Null ), data:Void Ptr=Null )
+	Function uiWindowBorderless:Int( w:uiWindow )
+	Function uiWindowSetBorderless:Void( w:uiWindow, borderless:Int )
+	Function uiWindowSetChild:Void( w:uiWindow, child:uiControl )
+	Function uiWindowMargined:Int( w:uiWindow )
+	Function uiWindowSetMargined:Void( w:uiWindow, margined:Int=1 )
+	Function uiNewWindow:uiWindow( title:CString, width:Int, height:Int, hasMenubar:Int=0 )
 	
 	' BUTTON
 	Class uiButton Extends uiControl
 	End
 	
-	Function uiButtonText:String( ui:uiButton )
-	Function uiButtonSetText:Void( ui:uiButton, text:CString )
-	Function uiButtonOnClicked:Void( ui:uiButton, func:Void( ui:uiButton, data:Void Ptr=Null ), data:Void Ptr=Null )
+	Function uiButtonText:String( b:uiButton )
+	Function uiButtonSetText:Void( b:uiButton, text:CString )
+	Function uiButtonOnClicked:Void( b:uiButton, func:Void( b:uiButton, data:Void Ptr=Null ), data:Void Ptr=Null )
 	Function uiNewButton:uiButton( char:CString )
 	
 	' BOX
 	Class uiBox Extends uiControl
 	End
 	
-	Function uiBoxAppend:Void( ui:uiBox, child:uiControl, stretchy:Int )
-	Function uiBoxDelete( ui:uiBox, index:Int )
-	Function uiBoxPadded:Int( ui:uiBox )
-	Function uiBoxSetPadded( ui:uiBox, padded:Int )
+	Function uiBoxAppend:Void( b:uiBox, child:uiControl, stretchy:Int=0 )
+	Function uiBoxDelete( b:uiBox, index:Int )
+	Function uiBoxPadded:Int( b:uiBox )
+	Function uiBoxSetPadded( b:uiBox, padded:Int=1 )
 	Function uiNewHorizontalBox:uiBox()
 	Function uiNewVerticalBox:uiBox()
 	
@@ -104,22 +104,22 @@ Extern
 	Class uiCheckbox Extends uiControl
 	End
 	
-	Function uiCheckboxText:String( ui:uiCheckbox )
-	Function uiCheckboxSetText:Void( ui:uiCheckbox, text:CString )
-	Function uiCheckboxOnToggled:Void( ui:uiCheckbox, func:Void( ui:uiCheckbox, data:Void Ptr=Null ), data:Void Ptr=Null )
-	Function uiCheckboxChecked:Int( ui:uiCheckbox )
-	Function uiCheckboxSetChecked:Void( ui:uiCheckbox, checked:Int )
+	Function uiCheckboxText:String( c:uiCheckbox )
+	Function uiCheckboxSetText:Void( c:uiCheckbox, text:CString )
+	Function uiCheckboxOnToggled:Void( c:uiCheckbox, func:Void( c:uiCheckbox, data:Void Ptr=Null ), data:Void Ptr=Null )
+	Function uiCheckboxChecked:Int( c:uiCheckbox )
+	Function uiCheckboxSetChecked:Void( c:uiCheckbox, checked:Int=1 )
 	Function uiNewCheckbox:uiCheckbox( text:CString )
 	
 	' ENTRY
 	Class uiEntry Extends uiControl
 	End
 	
-	Function uiEntryText:String( ui:uiEntry )
-	Function uiEntrySetText:Void( ui:uiEntry, text:CString )
-	Function uiEntryOnChanged:Void( ui:uiEntry, func:Void( ui:uiEntry, data:Void Ptr=Null ), data:Void Ptr=Null )
-	Function uiEntryReadOnly:Int( ui:uiEntry )
-	Function uiEntrySetReadOnly:Void( ui:uiEntry, readonly:Int )
+	Function uiEntryText:String( e:uiEntry )
+	Function uiEntrySetText:Void( e:uiEntry, text:CString )
+	Function uiEntryOnChanged:Void( e:uiEntry, func:Void( e:uiEntry, data:Void Ptr=Null ), data:Void Ptr=Null )
+	Function uiEntryReadOnly:Int( e:uiEntry )
+	Function uiEntrySetReadOnly:Void( e:uiEntry, readonly:Int=1 )
 	Function uiNewEntry:uiEntry()
 	Function uiNewPasswordEntry:uiEntry()
 	Function uiNewSearchEntry:uiEntry()
@@ -128,57 +128,57 @@ Extern
 	Class uiLabel Extends uiControl
 	End
 	
-	Function uiLabelText:String( ui:uiLabel )
-	Function uiLabelSetText:Void( ui:uiLabel, text:CString )
+	Function uiLabelText:String( l:uiLabel )
+	Function uiLabelSetText:Void( l:uiLabel, text:CString )
 	Function uiNewLabel:uiLabel( text:CString )
 	
 	' TAB
 	Class uiTab Extends uiControl
 	End
 	
-	Function uiTabAppend:Void( ui:uiTab, name:CString, ui:uiControl )
-	Function uiTabInsertAt:Void( ui:uiTab, name:Cstring, before:Int, ui:uiControl )
-	Function uiTabDelete:Void( ui:uiTab, index:Int )
-	Function uiTabNumPages:Int( ui:uiTab )
-	Function uiTabMargined:Int( ui:uiTab, page:Int )
-	Function uiTabSetMargined:Void( ui:uiTab, page:Int, margined:Int )
+	Function uiTabAppend:Void( t:uiTab, name:CString, c:uiControl )
+	Function uiTabInsertAt:Void( t:uiTab, name:CString, before:Int, c:uiControl )
+	Function uiTabDelete:Void( t:uiTab, index:Int )
+	Function uiTabNumPages:Int( t:uiTab )
+	Function uiTabMargined:Int( t:uiTab, page:Int )
+	Function uiTabSetMargined:Void( t:uiTab, page:Int, margined:Int=1 )
 	Function uiNewTab:uiTab()
 	
 	' GROUP
 	Class uiGroup Extends uiControl
 	End
 	
-	Function uiGroupTitle:String( ui:uiGroup )
-	Function uiGroupSetTitle:Void( ui:uiGroup, title:CString )
-	Function uiGroupSetChild:Void( ui:uiGroup, uiControl)
-	Function uiGroupMargined:Int( ui:uiGroup)
-	Function uiGroupSetMargined:Void( ui:uiGroup, margined:Int )
+	Function uiGroupTitle:String( g:uiGroup )
+	Function uiGroupSetTitle:Void( g:uiGroup, title:CString )
+	Function uiGroupSetChild:Void( g:uiGroup, c:uiControl )
+	Function uiGroupMargined:Int( g:uiGroup)
+	Function uiGroupSetMargined:Void( g:uiGroup, margined:Int=1 )
 	Function uiNewGroup:uiGroup( title:CString )
 	
 	' SPINBOX
 	Class uiSpinbox Extends uiControl
 	End
 	
-	Function uiSpinboxValue:Int( ui:uiSpinbox )
-	Function uiSpinboxSetValue:Void( ui:uiSpinbox, value:Int )
-	Function uiSpinboxOnChanged:Void( ui:uiSpinbox, func:Void( ui:uiSpinbox, data:Void Ptr=Null ), data:Void Ptr=Null )
+	Function uiSpinboxValue:Int( s:uiSpinbox )
+	Function uiSpinboxSetValue:Void( s:uiSpinbox, value:Int )
+	Function uiSpinboxOnChanged:Void( s:uiSpinbox, func:Void( s:uiSpinbox, data:Void Ptr=Null ), data:Void Ptr=Null )
 	Function uiNewSpinbox:uiSpinbox( min:Int, max:Int )
 	
 	' SLIDER
 	Class uiSlider Extends uiControl
 	End
 	
-	Function uiSliderValue:Int(uiSlider)
-	Function uiSliderSetValue:Void(ui:uiSlider, value:Int)
-	Function uiSliderOnChanged:Void(ui:uiSlider, func:Void(ui:uiSlider, data:Void Ptr=Null), data:Void Ptr=Null)
-	Function uiNewSlider:uiSlider(min:Int, max:Int)
+	Function uiSliderValue:Int( s:uiSlider )
+	Function uiSliderSetValue:Void( s:uiSlider, value:Int )
+	Function uiSliderOnChanged:Void( s:uiSlider, func:Void( s:uiSlider, data:Void Ptr=Null ), data:Void Ptr=Null )
+	Function uiNewSlider:uiSlider( min:Int, max:Int )
 	
 	' PROGRESSBAR
 	Class uiProgressBar Extends uiControl
 	End
 	
-	Function uiProgressBarValue:Int(uiProgressBar)
-	Function uiProgressBarSetValue(ui:uiProgressBar, n:Int)
+	Function uiProgressBarValue:Int( p:uiProgressBar )
+	Function uiProgressBarSetValue( p:uiProgressBar, n:Int )
 	Function uiNewProgressBar:uiProgressBar()
 	
 	' SEPARATOR
@@ -192,30 +192,30 @@ Extern
 	Class uiCombobox Extends uiControl
 	End
 	
-	Function uiComboboxAppend(ui:uiCombobox, text:CString)
-	Function uiComboboxSelected:Int( ui:uiCombobox )
-	Function uiComboboxSetSelected(ui:uiCombobox, n:Int)
-	Function uiComboboxOnSelected(ui:uiCombobox, func:Void(ui:uiCombobox, data:Void Ptr=Null), data:Void Ptr=Null)
+	Function uiComboboxAppend( c:uiCombobox, text:CString )
+	Function uiComboboxSelected:Int( c:uiCombobox )
+	Function uiComboboxSetSelected( c:uiCombobox, n:Int )
+	Function uiComboboxOnSelected( c:uiCombobox, func:Void( c:uiCombobox, data:Void Ptr=Null ), data:Void Ptr=Null )
 	Function uiNewCombobox:uiCombobox()
 	
 	' EDITABLE COMBOBOX
 	Class uiEditableCombobox Extends uiControl
 	End
 	
-	Function uiEditableComboboxAppend(ui:uiEditableCombobox, text:CString)
-	Function uiEditableComboboxText:String(uiEditableCombobox)
-	Function uiEditableComboboxSetText(ui:uiEditableCombobox, text:CString)
-	Function uiEditableComboboxOnChanged(ui:uiEditableCombobox, func:Void(ui:uiEditableCombobox, data:Void Ptr=Null), data:Void Ptr=Null)
+	Function uiEditableComboboxAppend( e:uiEditableCombobox, text:CString )
+	Function uiEditableComboboxText:String( e:uiEditableCombobox )
+	Function uiEditableComboboxSetText( e:uiEditableCombobox, text:CString )
+	Function uiEditableComboboxOnChanged( e:uiEditableCombobox, func:Void( e:uiEditableCombobox, data:Void Ptr=Null ), data:Void Ptr=Null )
 	Function uiNewEditableCombobox:uiEditableCombobox()
 	
 	' RADIO BUTTON
 	Class uiRadioButtons Extends uiControl
 	End
 	
-	Function uiRadioButtonsAppend(ui:uiRadioButtons, text:CString)
-	Function uiRadioButtonsSelected:int(uiRadioButtons)
-	Function uiRadioButtonsSetSelected(ui:uiRadioButtons, n:Int)
-	Function uiRadioButtonsOnSelected(ui:uiRadioButtons, func:Void( ui:uiRadioButtons, data:Void Ptr=Null ), data:Void Ptr=Null)
+	Function uiRadioButtonsAppend( r:uiRadioButtons, text:CString )
+	Function uiRadioButtonsSelected:Int( r:uiRadioButtons )
+	Function uiRadioButtonsSetSelected( r:uiRadioButtons, n:Int )
+	Function uiRadioButtonsOnSelected( r:uiRadioButtons, func:Void( r:uiRadioButtons, data:Void Ptr=Null ), data:Void Ptr=Null )
 	Function uiNewRadioButtons:uiRadioButtons()
 	
 	' TIME PICKER
@@ -230,12 +230,12 @@ Extern
 	Class uiMultilineEntry Extends uiControl
 	End
 	
-	Function uiMultilineEntryText:String(uiMultilineEntry)
-	Function uiMultilineEntrySetText(ui:uiMultilineEntry, text:CString)
-	Function uiMultilineEntryAppend(ui:uiMultilineEntry, text:CString)
-	Function uiMultilineEntryOnChanged(ui:uiMultilineEntry, func:Void(ui:uiMultilineEntry, data:Void Ptr=Null), data:Void Ptr=Null)
-	Function uiMultilineEntryReadOnly:Int(ui:uiMultilineEntry)
-	Function uiMultilineEntrySetReadOnly(ui:uiMultilineEntry, readonly:Int)
+	Function uiMultilineEntryText:String( m:uiMultilineEntry )
+	Function uiMultilineEntrySetText( m:uiMultilineEntry, text:CString )
+	Function uiMultilineEntryAppend( m:uiMultilineEntry, text:CString )
+	Function uiMultilineEntryOnChanged( m:uiMultilineEntry, func:Void( m:uiMultilineEntry, data:Void Ptr=Null ), data:Void Ptr=Null )
+	Function uiMultilineEntryReadOnly:Int( m:uiMultilineEntry )
+	Function uiMultilineEntrySetReadOnly( m:uiMultilineEntry, readonly:Int=1 )
 	Function uiNewMultilineEntry:uiMultilineEntry()
 	Function uiNewNonWrappingMultilineEntry:uiMultilineEntry()
 	
@@ -243,186 +243,135 @@ Extern
 	Class uiMenuItem Extends uiControl
 	End
 	
-	Function uiMenuItemEnable(ui:uiMenuItem)
-	Function uiMenuItemDisable(ui:uiMenuItem)
-	Function uiMenuItemOnClicked( ui:uiMenuItem, func:Void( sender:uiMenuItem, window:uiWindow, data:Void Ptr=Null ), data:Void Ptr=Null )
-	Function uiMenuItemChecked:Int(ui:uiMenuItem)
-	Function uiMenuItemSetChecked(ui:uiMenuItem, checked:Int)
+	Function uiMenuItemEnable( m:uiMenuItem )
+	Function uiMenuItemDisable( m:uiMenuItem )
+	Function uiMenuItemOnClicked( m:uiMenuItem, func:Void( sender:uiMenuItem, window:uiWindow, data:Void Ptr=Null ), data:Void Ptr=Null )
+	Function uiMenuItemChecked:Int( m:uiMenuItem )
+	Function uiMenuItemSetChecked( m:uiMenuItem, checked:Int )
 	
 	' MENU
 	Class uiMenu Extends uiControl
 	End
 	
-	Function uiMenuAppendItem:uiMenuItem(ui:uiMenu, name:CString)
-	Function uiMenuAppendCheckItem:uiMenuItem(ui:uiMenu, name:CString)
-	Function uiMenuAppendQuitItem:uiMenuItem(ui:uiMenu)
-	Function uiMenuAppendPreferencesItem:uiMenuItem(ui:uiMenu)
-	Function uiMenuAppendAboutItem:uiMenuItem(ui:uiMenu)
-	Function uiMenuAppendSeparator(ui:uiMenu)
-	Function uiNewMenu:uiMenu(name:CString)
+	Function uiMenuAppendItem:uiMenuItem( m:uiMenu, name:CString )
+	Function uiMenuAppendCheckItem:uiMenuItem( m:uiMenu, name:CString ) 
+	Function uiMenuAppendQuitItem:uiMenuItem( m:uiMenu )
+	Function uiMenuAppendPreferencesItem:uiMenuItem( m:uiMenu )
+	Function uiMenuAppendAboutItem:uiMenuItem( m:uiMenu )
+	Function uiMenuAppendSeparator( m:uiMenu )
+	Function uiNewMenu:uiMenu( name:CString )
 	
 	' DIALOG
 	Function uiOpenFile:String( parent:uiWindow )
 	Function uiSaveFile:String( parent:uiWindow )
-	Function uiMsgBox( parent:uiWindow, title:CString, description:CString)
-	Function uiMsgBoxError( parent:uiWindow, title:CString, description:CString)
-
-Internal
-
-
-' PROBLEM
-' Do not press any keys (like Escape) in the example
-' You can type in the input
-' But any key presses outside of that crashes the window
-
-'==EXAMPLE=========
-Function Test:Void( ui:uiButton, data:Void Ptr )
-	uiControlDisable( ui )
-End
-
-Function ButtonPopup:Void( ui:uiButton, data:Void Ptr )
-	' PROBLEM
-	' uiMsgBox wants a parent window
-	' We could get that via uiControlParent( button pressed )
-	' Problem is that parent is returned as "uiControl" and it wants "uiWindow"
-	' Casting to "uiWindow" doesn't seem to work either
+	Function uiMsgBox( parent:uiWindow, title:CString, description:CString )
+	Function uiMsgBoxError( parent:uiWindow, title:CString, description:CString )
 	
-	'uiMsgBox( uiControlParent( ui ), "Yes?", "You clicked..." )
-	'uiMsgBox( Cast<uiWindow>(uiControlParent( ui )), "Yes?", "You clicked..." )
-End
-
-Function onClosing:Int( ui:uiWindow, data:Void Ptr )
-	Print "BYE!"
-	uiQuit()
-	Return True 'Allow close
-End
-
-Function Main()
+	' FONT BUTTON
+	Class uiFontButton Extends uiControl
+	End
 	
-	Local options:uiInitOptions
-	uiInit( Varptr options )
+	'Function uiFontButtonFont:uiDrawTextFont( b:uiFontButton )
+	Function uiFontButtonOnChanged( b:uiFontButton, func:Void( b:uiFontButton, data:Void Ptr=Null ), data:Void Ptr=Null )
+	Function uiNewFontButton:uiFontButton()
 	
-	Local menu:= uiNewMenu("File")
-	Local item:= uiMenuAppendItem(menu, "Open")
-	'uiMenuItemOnClicked(item, openClicked, Null)
-	item = uiMenuAppendItem(menu, "Save")
-	'uiMenuItemOnClicked(item, saveClicked, Null)
-	item = uiMenuAppendQuitItem(menu)
-	'uiOnShouldQuit(shouldQuit, Null)
-
-	menu = uiNewMenu("Edit")
-	item = uiMenuAppendCheckItem(menu, "Checkable Item")
-	uiMenuAppendSeparator(menu)
-	item = uiMenuAppendItem(menu, "Disabled Item")
-	uiMenuItemDisable(item)
-	item = uiMenuAppendPreferencesItem(menu)
-
-	menu = uiNewMenu("Help")
-	item = uiMenuAppendItem(menu, "Help")
-	item = uiMenuAppendAboutItem(menu)
-
-	Local mainwin:= uiNewWindow("libui Control Gallery", 640, 480, 1)
-	uiWindowSetMargined(mainwin, 1)
-	uiWindowOnClosing(mainwin, onClosing)
+	' COLOR BUTTON
+	Class uiColorButton Extends uiControl
+	End
 	
-	Local box:= uiNewVerticalBox()
-	uiBoxSetPadded(box, 1)
-	uiWindowSetChild(mainwin, box)
+	Function uiColorButtonColor( b:uiColorButton, r:Double Ptr, g:Double Ptr, bl:Double Ptr, a:Double Ptr)
+	Function uiColorButtonSetColor( b:uiColorButton, r:Double, g:Double, b:Double, a:Double=1.0 )
+	Function uiColorButtonOnChanged( b:uiColorButton, func:Void( b:uiColorButton, data:Void Ptr=Null ), data:Void Ptr=Null )
+	Function uiNewColorButton:uiColorButton()
 	
-	Local hbox:= uiNewHorizontalBox()
-	uiBoxSetPadded(hbox, 1)
-	uiBoxAppend(box, hbox, 1)
+	' FORM
+	Class uiForm Extends uiControl
+	End
 	
-	Local group:= uiNewGroup("Basic Controls")
-	uiGroupSetMargined(group, 1)
-	uiBoxAppend(hbox, group, 0)
+	Function uiFormAppend( f:uiForm , label:String, c:uiControl, stretchy:Int=0 )
+	Function uiFormDelete( f:uiForm, index:Int )
+	Function uiFormPadded:Int( f:uiForm )
+	Function uiFormSetPadded( f:uiForm, padded:Int=1 )
+	Function uiNewForm:uiForm()
 	
-	Local inner:= uiNewVerticalBox()
-	uiBoxSetPadded(inner, 1)
-	uiGroupSetChild(group, inner)
+	' GRID
+	Class uiGrid Extends uiControl
+	End
 	
-	uiBoxAppend(inner, uiNewButton("Button"), 0)
-	uiBoxAppend(inner, uiNewCheckbox("Checkbox"), 0)
-	Local entry:=uiNewEntry()
-	uiEntrySetText(entry, "Entry")
-	uiBoxAppend(inner, entry, 0)
-	uiBoxAppend(inner, uiNewLabel("Label"), 0)
+	Function uiGridAppend( g:uiGrid, c:uiControl, left:Int, top:Int, xspan:Int, yspan:Int, hexpand:Int, halign:uiAlign, vexpand:Int, valign:uiAlign )
+	Function uiGridInsertAt( g:uiGrid, c:uiControl, existing:uiControl, at:uiAt, xspan:Int, yspan:Int, hexpand:Int, halign:uiAlign, vexpand:Int, valign:uiAlign)
+	Function uiGridPadded:Int( g:uiGrid )
+	Function uiGridSetPadded( g:uiGrid, padded:Int=1 )
+	Function uiNewGrid:uiGrid()
 	
-	uiBoxAppend(inner, uiNewHorizontalSeparator(), 0)
+	Enum uiAlign
+		uiAlignFill
+		uiAlignStart
+		uiAlignCenter
+		uiAlignEnd
+	End
 	
-	uiBoxAppend(inner, uiNewDatePicker(), 0)
-	uiBoxAppend(inner, uiNewTimePicker(), 0)
-	uiBoxAppend(inner, uiNewDateTimePicker(), 0)
+	Enum uiAt
+		uiAtLeading
+		uiAtTop
+		uiAtTrailing
+		uiAtBottom
+	End
 	
-	' NOT WRAPPED
-	'uiBoxAppend(inner, uiNewFontButton(), 0)
-	' NOT WRAPPED
-	'uiBoxAppend(inner, uiNewColorButton(), 0)
+	' AREA
+	Class uiArea Extends uiControl
+	End
 	
-	Local inner2:=uiNewVerticalBox()
-	uiBoxSetPadded(inner2, 1)
-	uiBoxAppend(hbox, inner2, 1)
+	Class uiAreaHandler Extends Void="uiAreaHandler"
+		Field Draw:Void( h:uiAreaHandler, a:uiArea, d:uiAreaDrawParams )
+		Field MouseEvent:Void( h:uiAreaHandler, a:uiArea, m:uiAreaMouseEvent )
+		Field MouseCrossed:Void( h:uiAreaHandler, a:uiArea, left:Int )
+		Field DragBroken:Void( h:uiAreaHandler, a:uiArea )
+		Field KeyEvent:Int( h:uiAreaHandler, a:uiArea, k:uiAreaKeyEvent )
+	End
 	
-	group=uiNewGroup("Numbers")
-	uiGroupSetMargined(group, 1)
-	uiBoxAppend(inner2, group, 0)
+	Class uiAreaDrawParams Extends Void="uiAreaDrawParams"
+	End
 	
-	inner=uiNewVerticalBox()
-	uiBoxSetPadded(inner, 1)
-	uiGroupSetChild(group, inner)
+	Class uiAreaMouseEvent Extends Void="uiAreaMouseEvent"
+		Field X:Double
+		Field Y:Double
+		Field AreaWidth:Double
+		Field AreaHeight:Double
+		Field Down:Int
+		Field Up:Int
+		Field Count:Int
+		Field Held1To64:uint64_t
+		
+		'Field Modifiers:uiModifiers
+	End
 	
-	Local spinbox:=uiNewSpinbox(0, 100)
-	'uiSpinboxOnChanged(spinbox, onSpinboxChanged, Null)
-	uiBoxAppend(inner, spinbox, 0)
+	Class uiAreaKeyEvent Extends Void="uiAreaKeyEvent"
+		Field Key:Int
+		Field Up:Int
+		
+		'Field ExtKey:uiExtKey
+		'Field Modifier:uiModifiers
+		'Field Modifiers:uiModifiers
+	End
 	
-	Local slider:=uiNewSlider(0, 100)
-	'uiSliderOnChanged(slider, onSliderChanged, Null)
-	uiBoxAppend(inner, slider, 0)
 	
-	Local progressbar:= uiNewProgressBar()
-	uiBoxAppend(inner, progressbar, 0)
+	Function uiAreaSetSize( a:uiArea, width:Int, height:Int )
 	
-	group=uiNewGroup("Lists")
-	uiGroupSetMargined(group, 1)
-	uiBoxAppend(inner2, group, 0)
+	Function uiAreaQueueRedrawAll( a:uiArea )
+	Function uiAreaScrollTo( a:uiArea, x:Double, y:Double, width:Double, height:Double )
+	Function uiAreaBeginUserWindowMove( a:uiArea )
+	Function uiAreaBeginUserWindowResize( a:uiArea, edge:uiWindowResizeEdge )
+	Function uiNewArea:uiArea( ah:uiAreaHandler )
+	Function uiNewScrollingArea:uiArea( ah:uiAreaHandler, width:Int, height:Int )
 	
-	inner=uiNewVerticalBox()
-	uiBoxSetPadded(inner, 1)
-	uiGroupSetChild(group, inner)
-	
-	Local cbox:=uiNewCombobox()
-	uiComboboxAppend(cbox, "Combobox Item 1")
-	uiComboboxAppend(cbox, "Combobox Item 2")
-	uiComboboxAppend(cbox, "Combobox Item 3")
-	uiBoxAppend(inner, cbox, 0)
-	
-	Local ecbox:=uiNewEditableCombobox()
-	uiEditableComboboxAppend(ecbox, "Editable Item 1")
-	uiEditableComboboxAppend(ecbox, "Editable Item 2")
-	uiEditableComboboxAppend(ecbox, "Editable Item 3")
-	uiBoxAppend(inner, ecbox, 0)
-	
-	Local rb:=uiNewRadioButtons()
-	uiRadioButtonsAppend(rb, "Radio Button 1")
-	uiRadioButtonsAppend(rb, "Radio Button 2")
-	uiRadioButtonsAppend(rb, "Radio Button 3")
-	uiBoxAppend(inner, rb, 1)
-	
-	Local tab:=uiNewTab()
-	
-	' PROBLEM
-	' Appeding to a tab causes a crash
-	
-'	uiTabAppend(tab, "Page 1", uiNewButton( "Heya" ))
-'	uiTabAppend(tab, "Page 2", uiNewHorizontalBox())
-'	uiTabAppend(tab, "Page 3", uiNewHorizontalBox())
-	uiBoxAppend(inner2, tab, 1)
-	
-	uiControlShow( mainwin )
-	uiMain()
-	
-	' PROBLEM
-	' Uninit causes a crash?
-	
-	'uiUninit()
-End
+	Enum uiWindowResizeEdge
+		uiWindowResizeEdgeLeft
+		uiWindowResizeEdgeTop
+		uiWindowResizeEdgeRight
+		uiWindowResizeEdgeBottom
+		uiWindowResizeEdgeTopLeft
+		uiWindowResizeEdgeTopRight
+		uiWindowResizeEdgeBottomLeft
+		uiWindowResizeEdgeBottomRight
+	End
