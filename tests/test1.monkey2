@@ -136,6 +136,8 @@ Function Main()
 	uiRadioButtonsAppend(rb, "Radio Button 3")
 	uiBoxAppend(inner, rb, 1)
 	
+	'Print rb.Enabled( rb )
+	
 	Local tab:=uiNewTab()
 	
 	' PROBLEM
