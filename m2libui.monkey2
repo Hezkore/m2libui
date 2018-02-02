@@ -37,20 +37,20 @@ Extern
 	
 	' CONTROL
 	Class uiControl Extends Void="uiControl"
-		Field Signature:uint32_t
-		Field OSSignature:uint32_t
-		Field TypeSignature:uint32_t
-		Field Destroy:Void( c:uiControl )
-		Field Handle:uintptr_t( c:uiControl )
-		Field Parent:uiControl( c:uiControl )
-		Field SetParent:Void( c:uiControl, p:uiControl )
-		Field Toplevel:Int( c:uiControl )
-		Field Visible:Int( c:uiControl )
-		Field Show:Void( c:uiControl )
-		Field Hide:Void( c:uiControl )
-		Field Enabled:Int( c:uiControl )
-		Field Enable:Void( c:uiControl )
-		Field Disable:Void( c:uiControl )
+'		Field Signature:uint32_t
+'		Field OSSignature:uint32_t
+'		Field TypeSignature:uint32_t
+'		Field Destroy:Void( c:Void Ptr )
+'		Field Handle:uintptr_t( c:uiControl )
+'		Field Parent:uiControl( c:uiControl )
+'		Field SetParent:Void( c:uiControl, p:uiControl )
+'		Field Toplevel:Int( c:uiControl )
+'		Field Visible:Int( c:uiControl )
+'		Field Show:Void( c:uiControl )
+'		Field Hide:Void( c:uiControl )
+'		Field Enabled:Int( c:uiControl )
+'		Field Enable:Void( c:uiControl )
+'		Field Disable:Void( c:uiControl )
 	End
 	
 	Function uiControlDestroy:Void( c:uiControl )

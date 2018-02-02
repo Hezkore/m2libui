@@ -1,4 +1,5 @@
-#Import "<m2libui>"
+'#Import "<m2libui>"
+#Import "../m2libui"
 Using m2libui..
 
 Function onClosing:Int( w:uiWindow, data:Void Ptr )
@@ -15,10 +16,6 @@ End
 Function colorButtonOnChanged( b:uiColorButton, data:Void Ptr=Null )
 	
 End
-
-' PROBLEM
-' Pressing escape crashes the app
-' I think this is a bug in libui though
 
 Function Main()
 	
@@ -136,17 +133,15 @@ Function Main()
 	uiRadioButtonsAppend(rb, "Radio Button 3")
 	uiBoxAppend(inner, rb, 1)
 	
-	'Print rb.Enabled( rb )
-	
 	Local tab:=uiNewTab()
 	
 	' PROBLEM
-	' Appeding to a tab causes a crash
+	' Appending to a tab causes a crash
 	
-	'uiTabAppend(tab, "Page 1", uiNewHorizontalBox())
-	'uiTabAppend(tab, "Page 2", uiNewHorizontalBox())
-	'uiTabAppend(tab, "Page 3", uiNewHorizontalBox())
-	uiBoxAppend(inner2, tab, 1)
+	'uiTabAppend( tab, "", Null )
+	'uiTabAppend( tab, "Page 2", uiNewHorizontalBox() )
+	'uiTabAppend( tab, "Page 3", uiNewHorizontalBox() )
+	'uiBoxAppend( inner2, tab, 1 )
 	
 	uiControlShow( mainwin )
 	uiMain() 'Main loop
