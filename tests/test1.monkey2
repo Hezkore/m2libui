@@ -1,5 +1,4 @@
-'#Import "<m2libui>"
-#Import "../m2libui"
+#Import "<m2libui>"
 Using m2libui..
 
 Function onClosing:Int( w:uiWindow, data:Void Ptr )
@@ -13,11 +12,12 @@ Function shouldQuit:Int( data:Void Ptr )
 	Return True 'Allow quit
 End
 
-Function colorButtonOnChanged( b:uiColorButton, data:Void Ptr=Null )
-	
-End
-
 Function Main()
+	
+	' PROBLEM
+	' Any function pointers for things like OnClicked
+	' has to be specifically using functions!
+	' It does not work with methods nor lambdas
 	
 	Local options:uiInitOptions
 	uiInit( Varptr options )
@@ -75,7 +75,7 @@ Function Main()
 	uiBoxAppend(inner, uiNewDateTimePicker(), 0)
 	
 	' PROBLEM
-	' Clicking any of these two buttons crashes the app
+	' Clicking Font/Color button crashes the app
 	
 	Local fButton:=uiNewFontButton()
 	uiBoxAppend(inner, fButton, 0)
@@ -148,6 +148,7 @@ Function Main()
 	
 	' PROBLEM
 	' Uninit causes a crash?
+	' Use uiQuit instead if you must
 	
 	'uiUninit()
 End
